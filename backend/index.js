@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
+const { UserModel } = require("./model/UserModel");
 
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
@@ -208,6 +209,21 @@ app.post("/newOrder", async (req, res) => {
     price: req.body.price,
     mode: req.body.mode,
   });
+
+  app.post("/signup", async (req, res) => {
+  try {
+    let newUser = new UserModel({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      phone: req.body.phone,
+    });
+    await newUser.save();
+    res.send("User registered!");
+  } catch (err) {
+    res.status(500).send("Signup failed!");
+  }
+});
 
   newOrder.save();
 
